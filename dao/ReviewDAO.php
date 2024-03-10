@@ -7,14 +7,12 @@ require_once("dao/UserDAO.php");
 
 class ReviewDao implements ReviewDAOInterface
 {
-
     private $conn;
     private $url;
     private $message;
 
     public function __construct(PDO $conn, $url)
     {
-
         $this->conn = $conn;
         $this->url = $url;
         $this->message = new Message($url);
@@ -54,7 +52,6 @@ class ReviewDao implements ReviewDAOInterface
         $this->message->setMessage("Crítica adicionada com sucesso!", "success", "index.php");
     }
 
-
     public function getMoviesReview($id)
     {
         $reviews = [];
@@ -87,8 +84,45 @@ class ReviewDao implements ReviewDAOInterface
 
     public function hasaAlreadyReviewed($id, $userId)
     {
+
+        $stmt = $this->conn->prepare("SELECT * FROM reviews WHERE movies_id = :movies_id AND users_id = :users_id");
+
+        $stmt->bindParam(":movies_id", $id);
+        $stmt->bindParam(":users_id", $usersId);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+
+            return true;
+        } else {
+            return false;
+        }
     }
     public function getRatings($id)
     {
+
+        $stmt = $this->conn->prepare("SELECT * FROM reviews WHERE movies_id = :movies_id");
+
+        $stmt->bindParam(":movies_id", $id);
+
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+
+            $rating = 0;
+
+            $reviews = $stmt->fetchAll();
+            foreach ($reviews as $review) {
+
+                $rating += $review["rating"];
+            }
+
+            $rating = $rating / count($reviews);
+        } else {
+            $rating = "Não avaliado";
+        }
+
+        return $rating;
     }
 }

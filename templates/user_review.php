@@ -10,7 +10,6 @@ $fullName = $userModel->getFullName($review->users_id);
 if ($review->users_id->image == "") {
     $review->users_id->image = "user.png";
 }
-
 ?>
 
 <div class="col-md-12 review">
@@ -19,8 +18,9 @@ if ($review->users_id->image == "") {
             <div class="profile-image-container review-image" style="background-image: url('<?= $BASE_URL ?>img/users/user.png');"></div>
         </div>
         <div class="col-md-9 author-details-container">
+
             <h4 class="author-name">
-                <a href="#">Pitica</a>
+                <a href="<?= $BASE_URL ?>profile.php?id=<?= $review->users_id->id ?>"><?= $fullName ?></a>
             </h4>
             <p><i class="fas fa-star"></i><?= $review->rating ?></p>
         </div>

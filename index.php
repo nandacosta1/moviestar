@@ -51,6 +51,7 @@ $comedyMovies = $movieDao->getMoviesByCategory("Comédia");
     <?php endif; ?>
 </div>
 
+
 <?php
 require_once("templates/footer.php");
 
